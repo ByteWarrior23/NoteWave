@@ -383,8 +383,8 @@ def flashcards_endpoint(request: StudioRequest):
 
 
 @app.post("/graph")
-@app.post("/api/graph")
-@app.post("/api/graph/extract")
+@app.post("/api/graph_removed")
+@app.post("/api/graph_removed/extract")
 def graph_endpoint(request: StudioRequest):
     resolved_key = resolve_api_key(request.api_key)
     target_file = request.fileId or request.filename or ""

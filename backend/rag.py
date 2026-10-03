@@ -851,47 +851,6 @@ Return ONLY valid JSON:
     ]
 
 
-def generate_graph(file_path_or_name: str, api_key: str) -> Dict[str, Any]:
-    text = _get_studio_context(file_path_or_name, max_chars=18000)
-    system = """
-Generate a 3D Knowledge Graph from the document concepts.
-Return ONLY valid JSON:
-{
-  "nodes": [
-    {"id": "n1", "name": "Central Concept", "group": 1, "val": 16},
-    {"id": "n2", "name": "Key Mechanism", "group": 2, "val": 11},
-    {"id": "n3", "name": "Outcome / Result", "group": 3, "val": 10}
-  ],
-  "links": [
-    {"source": "n1", "target": "n2", "label": "utilizes"},
-    {"source": "n2", "target": "n3", "label": "generates"}
-  ]
-}
-Groups: 1 = Core Thesis, 2 = Mechanisms, 3 = Evidence/Data, 4 = Implications.
-Include 12 to 18 interconnected nodes.
-"""
-    res = _invoke_with_retry(api_key, f"Document:\n{text}", temperature=0.3, system_prompt=system, json_mode=True)
-    parsed = _parse_json_dict(res, defaults={"nodes": [], "links": []}) or {}
-    nodes = parsed.get("nodes", [])
-    links = parsed.get("links", [])
-    if not isinstance(nodes, list):
-        nodes = []
-    if not isinstance(links, list):
-        links = []
-    if nodes:
-        return {"nodes": nodes, "links": links}
-    return {
-        "nodes": [
-            {"id": "n1", "name": os.path.basename(file_path_or_name), "group": 1, "val": 16},
-            {"id": "n2", "name": "Foundational Principles", "group": 2, "val": 12},
-            {"id": "n3", "name": "Applications", "group": 3, "val": 10}
-        ],
-        "links": [
-            {"source": "n1", "target": "n2", "label": "defines"},
-            {"source": "n2", "target": "n3", "label": "empowers"}
-        ]
-    }
-
 
 def delete_document_data(filename: str, api_key: Optional[str] = None):
     file_path = os.path.join("documents", filename)

@@ -33,7 +33,6 @@ interface ChatMessage {
 interface StudioCacheEntry {
   podcastScript: any[];
   flashcards: any[];
-  graphData: any;
   debateTranscript: any[];
   vaultAudit: any;
   quizQuestions: any[];
@@ -43,7 +42,6 @@ interface StudioCacheEntry {
 const emptyStudioCache = (): StudioCacheEntry => ({
   podcastScript: [],
   flashcards: [],
-  graphData: { nodes: [], links: [] },
   debateTranscript: [],
   vaultAudit: null,
   quizQuestions: [],
@@ -89,8 +87,6 @@ export default function RootPage() {
   const [isGeneratingPodcast, setIsGeneratingPodcast] = useState(false);
   const [flashcards, setFlashcards] = useState<any[]>([]);
   const [isGeneratingFlashcards, setIsGeneratingFlashcards] = useState(false);
-  const [graphData, setGraphData] = useState<any>({ nodes: [], links: [] });
-  const [isGeneratingGraph, setIsGeneratingGraph] = useState(false);
   const [debateTranscript, setDebateTranscript] = useState<any[]>([]);
   const [isDebating, setIsDebating] = useState(false);
   const [vaultAudit, setVaultAudit] = useState<any>(null);
@@ -176,14 +172,13 @@ export default function RootPage() {
       [activeDoc.name]: {
         podcastScript,
         flashcards,
-        graphData,
         debateTranscript,
         vaultAudit,
         quizQuestions,
         summaryText,
       },
     }));
-  }, [activeDoc, podcastScript, flashcards, graphData, debateTranscript, vaultAudit, quizQuestions, summaryText]);
+  }, [activeDoc, podcastScript, flashcards,  debateTranscript, vaultAudit, quizQuestions, summaryText]);
 
   const updateApiKey = (key: string) => {
     setApiKey(key);
@@ -197,7 +192,6 @@ export default function RootPage() {
       [docName]: {
         podcastScript,
         flashcards,
-        graphData,
         debateTranscript,
         vaultAudit,
         quizQuestions,
@@ -210,8 +204,7 @@ export default function RootPage() {
     const cached = studioCache[docName] || emptyStudioCache();
     setPodcastScript(cached.podcastScript);
     setFlashcards(cached.flashcards);
-    setGraphData(cached.graphData);
-    setDebateTranscript(cached.debateTranscript);
+        setDebateTranscript(cached.debateTranscript);
     setVaultAudit(cached.vaultAudit);
     setQuizQuestions(cached.quizQuestions);
     setSummaryText(cached.summaryText);
@@ -253,21 +246,6 @@ export default function RootPage() {
     }
   };
 
-  const handleGenerateGraph = async () => {
-    if (!activeDoc) return;
-    setIsGeneratingGraph(true);
-    try {
-      const res = await axios.post(`${API_BASE}/api/graph`, {
-        fileId: activeDoc.name,
-        api_key: apiKey,
-      });
-      if (res.data?.nodes) setGraphData(res.data);
-    } catch (err) {
-      showToast(getApiErrorMessage(err), "error");
-    } finally {
-      setIsGeneratingGraph(false);
-    }
-  };
 
   const handleStartDebate = async () => {
     if (!activeDoc) return;
@@ -432,9 +410,9 @@ export default function RootPage() {
     } else if (cmd.id === "flashcards") {
       setActiveStudio("flashcards");
       if (flashcards.length === 0) handleGenerateFlashcards();
-    } else if (cmd.id === "graph") {
-      setActiveStudio("graph");
-      if (!graphData?.nodes?.length) handleGenerateGraph();
+    } else if (cmd.id === "") {
+      setActiveStudio("");
+      if (!Data?.nodes?.length) handleGenerateGraph();
     } else if (cmd.id === "debate") {
       setActiveStudio("debate");
       if (debateTranscript.length === 0) handleStartDebate();
@@ -774,7 +752,7 @@ export default function RootPage() {
           setShowRightSidebar(true);
           if (studio === "podcast" && podcastScript.length === 0) handleGeneratePodcast();
           if (studio === "flashcards" && flashcards.length === 0) handleGenerateFlashcards();
-          if (studio === "graph" && !graphData?.nodes?.length) handleGenerateGraph();
+          if (studio === "" && !Data?.nodes?.length) handleGenerateGraph();
           if (studio === "debate" && debateTranscript.length === 0) handleStartDebate();
           if (studio === "vault" && !vaultAudit) handleVaultAudit();
           if (studio === "quiz" && quizQuestions.length === 0) handleGenerateQuiz();
@@ -793,9 +771,9 @@ export default function RootPage() {
           onClose: () => setActiveStudio("none"),
           onAddCard: (newCard: any) => setFlashcards([...flashcards, newCard]),
         }}
-        graphProps={{
-          data: graphData,
-          isLoading: isGeneratingGraph,
+        Props={{
+          data: 
+          isLoading: isGeneratingX,
           onGenerate: handleGenerateGraph,
           onClose: () => setActiveStudio("none"),
         }}
