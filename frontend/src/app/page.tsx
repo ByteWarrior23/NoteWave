@@ -412,7 +412,7 @@ export default function RootPage() {
       if (flashcards.length === 0) handleGenerateFlashcards();
     } else if (cmd.id === "") {
       setActiveStudio("");
-      if (!Data?.nodes?.length) handleGenerateGraph();
+      if (!Data?.nodes?.length) (()=>{})();
     } else if (cmd.id === "debate") {
       setActiveStudio("debate");
       if (debateTranscript.length === 0) handleStartDebate();
@@ -752,7 +752,7 @@ export default function RootPage() {
           setShowRightSidebar(true);
           if (studio === "podcast" && podcastScript.length === 0) handleGeneratePodcast();
           if (studio === "flashcards" && flashcards.length === 0) handleGenerateFlashcards();
-          if (studio === "" && !Data?.nodes?.length) handleGenerateGraph();
+          if (studio === "" && !Data?.nodes?.length) (()=>{})();
           if (studio === "debate" && debateTranscript.length === 0) handleStartDebate();
           if (studio === "vault" && !vaultAudit) handleVaultAudit();
           if (studio === "quiz" && quizQuestions.length === 0) handleGenerateQuiz();
@@ -774,7 +774,7 @@ export default function RootPage() {
         Props={{
           data: 
           isLoading: isGeneratingX,
-          onGenerate: handleGenerateGraph,
+          onGenerate: (()=>{}),
           onClose: () => setActiveStudio("none"),
         }}
         debateProps={{

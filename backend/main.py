@@ -19,7 +19,6 @@ from rag import (
     delete_document_data,
     generate_debate,
     generate_flashcards,
-    generate_graph,
     generate_podcast_script,
     generate_quiz,
     generate_vault_audit,
@@ -389,7 +388,6 @@ def graph_endpoint(request: StudioRequest):
     resolved_key = resolve_api_key(request.api_key)
     target_file = request.fileId or request.filename or ""
     try:
-        graph_data = generate_graph(target_file, resolved_key)
         return graph_data
     except Exception as e:
         handle_api_error(e)
