@@ -2,6 +2,8 @@ fastapi
 uvicorn
 python-multipart
 pypdf
+PyMuPDF
+pdfplumber
 chromadb
 langchain
 langchain-community
@@ -11,3 +13,6 @@ langchain-google-genai
 python-dotenv
 httpx
 google-genai
+rank-bm25
+rapidfuzz
+numpy

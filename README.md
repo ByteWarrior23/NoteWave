@@ -148,16 +148,9 @@ OLLAMA_MODEL=qwen3:1.7b             # Local model used when Gemini is unavailabl
 ELEVENLABS_API_KEY=your_key         # Optional - browser TTS is used when absent
 ```
 
-### Docker Compose
-
-```bash
-docker compose up --build
-```
-
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000`
-
 ---
+
+
 
 ## Self-Hosting with Ollama
 
@@ -198,7 +191,6 @@ ai-knowledge-hub/
 │   │   │   └── ui/                  # Radix + Tailwind UI primitives
 │   │   └── lib/                     # API client, commands registry, research agent profiles
 │   └── next.config.ts               # Rewrites /api/* to the FastAPI backend
-├── docker-compose.yml
 ├── PROJECT_DOCUMENTATION.md         # Full line-by-line engineering documentation
 └── docs/
     └── notewave-dashboard.png       # Interface preview
@@ -210,10 +202,6 @@ ai-knowledge-hub/
 
 - [x] **Resilient LLM Layer:** Key rotation + automatic local Ollama fallback
 - [x] **Live Chat Progress:** Job queue + status polling
-- [ ] **Deployment:** Vercel frontend + managed backend host with a live Gemini key
-- [ ] **Persistence:** Durable chat jobs and document metadata (beyond `localStorage`)
-- [ ] **Authentication:** Per-user collections and access control
-- [ ] **Reranking:** Semantic reranking of retrieved chunks for sharper grounding
 
 ---
 
