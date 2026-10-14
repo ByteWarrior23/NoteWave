@@ -14,7 +14,7 @@ class Settings:
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{os.path.join(BASE_DIR, 'notewave.db')}")
     
     # Models
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "models/gemini-embedding-001")
     EMBEDDING_DIM: int = int(os.getenv("EMBEDDING_DIM", "768"))
     EMBED_CACHE_MAXSIZE: int = int(os.getenv("EMBED_CACHE_MAXSIZE", "4096"))
