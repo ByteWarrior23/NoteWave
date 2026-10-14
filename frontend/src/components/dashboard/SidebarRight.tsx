@@ -3,11 +3,10 @@
 import React from "react";
 import { 
   Sparkles, Headphones, LayoutList, BrainCircuit, 
-  MessageSquare, Zap, ShieldCheck, Mic, Settings2, BookOpen 
+  MessageSquare, ShieldCheck, Mic, BookOpen 
 } from "lucide-react";
 import PodcastStudio from "./studios/PodcastStudio";
 import FlashcardsStudio from "./studios/FlashcardsStudio";
-import GraphStudio from "./studios/GraphStudio";
 import DebateStudio from "./studios/DebateStudio";
 import VaultStudio from "./studios/VaultStudio";
 import QuizStudio from "./studios/QuizStudio";
@@ -18,7 +17,6 @@ import SummaryStudio from "./studios/SummaryStudio";
 export type StudioType =
   | "podcast"
   | "flashcards"
-  | "graph"
   | "debate"
   | "vault"
   | "quiz"
@@ -34,7 +32,6 @@ interface SidebarRightProps {
   onSelectStudio: (studio: StudioType) => void;
   podcastProps: any;
   flashcardProps: any;
-  graphProps: any;
   debateProps: any;
   vaultProps: any;
   quizProps: any;
@@ -50,7 +47,6 @@ export default function SidebarRight({
   onSelectStudio,
   podcastProps,
   flashcardProps,
-  graphProps,
   debateProps,
   vaultProps,
   quizProps,
@@ -99,12 +95,6 @@ export default function SidebarRight({
                 onClick={() => onSelectStudio("flashcards")}
               />
               <FeatureCard
-                icon={<Zap className="w-4 h-4 text-yellow-400" />}
-                title="Knowledge Graph"
-                desc="3D neural nodes & conceptual relation clusters"
-                onClick={() => onSelectStudio("graph")}
-              />
-              <FeatureCard
                 icon={<MessageSquare className="w-4 h-4 text-rose-400" />}
                 title="Agentic Debate"
                 desc="Dr. Skeptic, The Weaver, and Veritas in arena"
@@ -140,7 +130,6 @@ export default function SidebarRight({
 
         {activeStudio === "podcast" && <PodcastStudio {...podcastProps} />}
         {activeStudio === "flashcards" && <FlashcardsStudio {...flashcardProps} />}
-        {activeStudio === "graph" && <GraphStudio {...graphProps} />}
         {activeStudio === "debate" && <DebateStudio {...debateProps} />}
         {activeStudio === "vault" && <VaultStudio {...vaultProps} />}
         {activeStudio === "quiz" && <QuizStudio {...quizProps} />}

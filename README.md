@@ -4,9 +4,7 @@
 
 ## **AI Research Copilot & Knowledge Hub**
 
-Your AI Research Copilot. Turn any PDF into interactive research chats, audio deep-dives, 3D concept maps, agentic debates, adaptive quizzes, and integrity audits - all inside a pitch-black, distraction-free workspace.
-
-<img src="docs/notewave-dashboard.png" alt="NoteWave Dashboard" width="900" />
+Your AI Research Copilot. Turn any PDF into interactive research chats, audio deep-dives, agentic debates, adaptive quizzes, and integrity audits - all inside a pitch-black, distraction-free workspace.
 
 </div>
 
@@ -29,9 +27,6 @@ NoteWave organizes research into specialized "Studios," each designed for a spec
 
 - **Flashcard Studio**
   AI-driven concept extraction with an interactive 3D flip UI for active-recall studying.
-
-- **3D Knowledge Graph**
-  An interactive 3D Force-Directed Graph (`react-force-graph-3d`) visualizing relationships between core concepts, with a 2D SVG fallback so it always renders.
 
 - **Agentic Debate**
   Multi-persona research arena where *Dr. Skeptic* (Critic), *The Weaver* (Synthesizer), and *Veritas* (Fact-Checker) debate the core thesis of your documents.
@@ -93,19 +88,15 @@ NoteWave organizes research into specialized "Studios," each designed for a spec
 - **Greeting Grace**
   Asking "hello" used to dump the entire stored document back at you. `_should_retrieve()` now detects greetings and chit-chat, disabling retrieval so the assistant replies conversationally.
 
-- **Always-Render Graphics**
-  WebGL can fail silently and blank the canvas. GraphStudio solves this with SSR-free dynamic imports plus a 2D SVG `ConceptMap2D` fallback so the concept map always renders.
-
 ---
 
 ## Tech Stack
 
 - **Core:** [Next.js 16](https://nextjs.org/), React 19, TypeScript, Tailwind CSS, Radix UI Primitives, framer-motion
-- **Backend:** FastAPI, LangChain, ChromaDB, Google GenAI SDK, httpx
+- **Backend:** FastAPI, ChromaDB, BM25 (`rank_bm25`), Cross-Encoder re-ranker, Google GenAI SDK, httpx
 - **LLM:** Google Gemini (Gemini-first) with **automatic local Ollama fallback**
 - **Embeddings:** Google Gemini Embedding (`models/gemini-embedding-001`, 768-dim)
-- **Vector Store:** ChromaDB (local, persistent)
-- **Spatial UI:** `react-force-graph-3d` & Three.js
+- **Vector Store:** ChromaDB (local, persistent) + BM25 keyword index with RRF fusion
 - **Voice:** Web Speech API with optional ElevenLabs TTS
 
 ---
@@ -168,12 +159,17 @@ NoteWave natively supports fully-private execution over a local Ollama instance 
 ## Project Structure
 
 ```
-ai-knowledge-hub/
+notewave/
 ├── backend/
 │   ├── main.py           # FastAPI app - chat (job queue + polling), upload, studios, TTS
-│   ├── rag.py            # RAG engine - embeddings, ChromaDB, Gemini + Ollama fallback, studios
+│   ├── config.py         # Centralized env-based settings
+│   ├── database.py       # SQLAlchemy layer - documents, parent chunks, query logs
+│   ├── ingestion.py      # PDF parsing, text cleaning, parent-child chunking
+│   ├── retrieval.py      # Hybrid retrieval - Gemini embeddings, ChromaDB, BM25, RRF, re-ranker
+│   ├── llm.py            # LLM engine (Gemini + Ollama fallback) and prompt builders
 │   ├── key_pool.py       # Round-robin Gemini key pool with rate-limit detection
 │   ├── tts.py            # ElevenLabs synthesis (optional)
+│   ├── verify_rag.py     # End-to-end RAG pipeline verification suite
 │   ├── requirements.txt
 │   ├── chroma_db/        # Persistent vector store (auto-created)
 │   └── documents/        # Uploaded PDFs
@@ -182,18 +178,14 @@ ai-knowledge-hub/
 │   │   ├── app/
 │   │   │   ├── globals.css          # Pitch-black theme + markdown styling
 │   │   │   ├── layout.tsx           # Root layout + theme provider
-│   │   │   ├── page.tsx             # Landing + 3-column dashboard (chat, sources, studios)
-│   │   │   └── api/[...path]/route.ts  # Next.js proxy to the FastAPI backend
+│   │   │   └── page.tsx             # Landing + 3-column dashboard (chat, sources, studios)
 │   │   ├── components/
 │   │   │   ├── dashboard/           # SidebarLeft, SidebarRight, CommandPalette
-│   │   │   │   └── studios/         # Podcast, Flashcards, Graph, Debate, Vault, Quiz, Voice, Summary, Settings
+│   │   │   │   └── studios/         # Podcast, Flashcards, Debate, Vault, Quiz, Voice, Summary, Settings
 │   │   │   ├── landing/             # Drag-and-drop landing page
 │   │   │   └── ui/                  # Radix + Tailwind UI primitives
 │   │   └── lib/                     # API client, commands registry, research agent profiles
-│   └── next.config.ts               # Rewrites /api/* to the FastAPI backend
-├── PROJECT_DOCUMENTATION.md         # Full line-by-line engineering documentation
-└── docs/
-    └── notewave-dashboard.png       # Interface preview
+│   └── next.config.ts
 ```
 
 ---

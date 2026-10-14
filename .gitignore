@@ -12,4 +12,7 @@ dist/
 *.log
 backend/chroma_db/
 backend/documents/
+backend/test_chroma_db/
+*.db
+*.pyc
 mongo_data/

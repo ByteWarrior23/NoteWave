@@ -4,7 +4,6 @@ import {
   GraduationCap, 
   Mic, 
   BookOpen,
-  Zap,
   MessageSquare,
   ShieldCheck,
   Settings2,
@@ -30,12 +29,6 @@ export const COMMANDS: Command[] = [
     label: "/flashcards",
     description: "Extract active recall study concepts with 3D flips",
     icon: LayoutList,
-  },
-  {
-    id: "graph",
-    label: "/graph",
-    description: "Visualize 3D knowledge nodes and concept links",
-    icon: Zap,
   },
   {
     id: "debate",

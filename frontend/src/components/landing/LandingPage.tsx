@@ -219,13 +219,6 @@ export default function LandingPage({
               </div>
             </div>
             <div className="p-3 rounded-2xl bg-zinc-100/50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-900 flex items-center gap-2.5 text-left">
-              <Zap className="w-4 h-4 text-yellow-400 shrink-0" />
-              <div>
-                <p className="text-xs font-bold">3D Graph</p>
-                <p className="text-[10px] text-zinc-500">Concept clusters</p>
-              </div>
-            </div>
-            <div className="p-3 rounded-2xl bg-zinc-100/50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-900 flex items-center gap-2.5 text-left">
               <ShieldCheck className="w-4 h-4 text-teal-400 shrink-0" />
               <div>
                 <p className="text-xs font-bold">Verified Vault</p>

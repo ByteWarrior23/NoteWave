@@ -178,7 +178,7 @@ export default function RootPage() {
         summaryText,
       },
     }));
-  }, [activeDoc, podcastScript, flashcards,  debateTranscript, vaultAudit, quizQuestions, summaryText]);
+  }, [activeDoc, podcastScript, flashcards, debateTranscript, vaultAudit, quizQuestions, summaryText]);
 
   const updateApiKey = (key: string) => {
     setApiKey(key);
@@ -204,7 +204,7 @@ export default function RootPage() {
     const cached = studioCache[docName] || emptyStudioCache();
     setPodcastScript(cached.podcastScript);
     setFlashcards(cached.flashcards);
-        setDebateTranscript(cached.debateTranscript);
+    setDebateTranscript(cached.debateTranscript);
     setVaultAudit(cached.vaultAudit);
     setQuizQuestions(cached.quizQuestions);
     setSummaryText(cached.summaryText);
@@ -245,7 +245,6 @@ export default function RootPage() {
       setIsGeneratingFlashcards(false);
     }
   };
-
 
   const handleStartDebate = async () => {
     if (!activeDoc) return;
@@ -410,9 +409,6 @@ export default function RootPage() {
     } else if (cmd.id === "flashcards") {
       setActiveStudio("flashcards");
       if (flashcards.length === 0) handleGenerateFlashcards();
-    } else if (cmd.id === "") {
-      setActiveStudio("");
-      if (!Data?.nodes?.length) (()=>{})();
     } else if (cmd.id === "debate") {
       setActiveStudio("debate");
       if (debateTranscript.length === 0) handleStartDebate();
@@ -752,7 +748,6 @@ export default function RootPage() {
           setShowRightSidebar(true);
           if (studio === "podcast" && podcastScript.length === 0) handleGeneratePodcast();
           if (studio === "flashcards" && flashcards.length === 0) handleGenerateFlashcards();
-          if (studio === "" && !Data?.nodes?.length) (()=>{})();
           if (studio === "debate" && debateTranscript.length === 0) handleStartDebate();
           if (studio === "vault" && !vaultAudit) handleVaultAudit();
           if (studio === "quiz" && quizQuestions.length === 0) handleGenerateQuiz();
@@ -770,12 +765,6 @@ export default function RootPage() {
           onGenerate: handleGenerateFlashcards,
           onClose: () => setActiveStudio("none"),
           onAddCard: (newCard: any) => setFlashcards([...flashcards, newCard]),
-        }}
-        Props={{
-          data: 
-          isLoading: isGeneratingX,
-          onGenerate: (()=>{}),
-          onClose: () => setActiveStudio("none"),
         }}
         debateProps={{
           transcript: debateTranscript,
